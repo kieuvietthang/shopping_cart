@@ -9,9 +9,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<LoadProducts>((event, emit) {
       try {
         List<Product> products = [
-          Product('assets/images/product_0.jpg', 'Product 1', 29.99),
-          Product('assets/images/product_1.jpg', 'Product 2', 19.99),
-          Product('assets/images/product_2.jpg', 'Product 3', 39.99),
+          Product(1, 'assets/images/product_0.jpg', 'Product', 29.99),
+          Product(2, 'assets/images/product_1.jpg', 'Product', 19.99),
+          Product(3, 'assets/images/product_2.jpg', 'Product', 39.99),
         ];
         emit(ProductLoaded(products));
       } catch (e) {

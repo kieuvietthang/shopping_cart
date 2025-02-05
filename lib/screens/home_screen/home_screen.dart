@@ -29,19 +29,34 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (state is ProductLoading) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (state is ProductLoaded) {
-                        return ListView.builder(
-                          itemCount: state.products.length,
-                          itemBuilder: (context, index) {
-                            final product = state.products[index];
-                            return Card(
-                              child: ListTile(
-                                leading: Image.asset(product.image!),
-                                title: Text(product.name!),
-                                subtitle: Text(
-                                    '\$${product.price!.toStringAsFixed(2)}'),
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'HOT Products',
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.deepOrange,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            );
-                          },
+                              Row(
+                                children: List.generate(
+                                  state.products.length,
+                                  (int index) {
+                                    final product = state.products[index];
+                                    return _buildItem(
+                                        context,
+                                        product.image!,
+                                        product.name!,
+                                        product.price!,
+                                        product.id!);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       }
                       return const Center(child: Text('No products found.'));
@@ -76,6 +91,34 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.white,
           ),
         )
+      ],
+    );
+  }
+
+  Column _buildItem(
+      BuildContext context, String image, String name, double price, int id) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    return Column(
+      children: [
+        Container(
+          height: height * 0.18,
+          width: width * 0.37,
+          margin: const EdgeInsets.symmetric(horizontal: 5,),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+            image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+          ),
+        ),
+        Text(
+          '$name $id',
+          style: const TextStyle(color: Colors.black, fontSize: 18),
+        ),
+        Text(
+          '$price đ',
+          style: const TextStyle(color: Colors.black, fontSize: 18),
+        ),
       ],
     );
   }
